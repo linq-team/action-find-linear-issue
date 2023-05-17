@@ -9739,12 +9739,26 @@ const main = async () => {
                             team: inputs.withTeam ? await issue.team : null,
                             labels: inputs.withLabels ? (await issue.labels()).nodes : null,
                             project: inputs.withProject ? await issue.project : null,
+                            parent: (await issue.parent) || null,
                         };
                     });
                     return Promise.all(promises);
                 };
                 const foundIssues = await extendIssues(issues);
                 (0, core_1.debug)(`Updated result: ${JSON.stringify(foundIssues)}`);
+                const issue = foundIssues[0];
+                const { project, parent } = issue;
+                (0, core_1.debug)(`parent issue: ${JSON.stringify(parent)}`);
+                const prTitle = [
+                    issue.team?.key,
+                    !!project && `(${issue.project?.name})`,
+                    ": ",
+                    !!parent && `${parent.title} - `,
+                    issue.title,
+                ]
+                    .filter(Boolean)
+                    .join("");
+                (0, core_1.setOutput)("pr-title", prTitle);
                 if (inputs.outputMultiple) {
                     (0, core_1.setOutput)("linear-issues", JSON.stringify(foundIssues));
                 }

@@ -29,11 +29,12 @@ type PartsWithOpts<Type> = {
 };
 type PartsType = PartsWithOpts<{ branch: void; title: void; body: void }>;
 
-type LimitedIssue = Omit<Issue, "team" | "labels" | "project">;
+type LimitedIssue = Omit<Issue, "team" | "labels" | "project" | "parent">;
 type FoundIssueType = LimitedIssue & {
   team?: Team | null;
   labels?: IssueLabel[] | null;
   project?: Project | null;
+  parent?: Issue | null;
 };
 
 const main = async () => {
@@ -123,6 +124,7 @@ const main = async () => {
                 team: inputs.withTeam ? await issue.team : null,
                 labels: inputs.withLabels ? (await issue.labels()).nodes : null,
                 project: inputs.withProject ? await issue.project : null,
+                parent: (await issue.parent) || null,
               };
             }
           );
@@ -133,6 +135,23 @@ const main = async () => {
         const foundIssues = await extendIssues(issues);
 
         debug(`Updated result: ${JSON.stringify(foundIssues)}`);
+
+        const issue = foundIssues[0];
+        const { project, parent } = issue;
+
+        debug(`parent issue: ${JSON.stringify(parent)}`);
+
+        const prTitle = [
+          issue.team?.key,
+          !!project && `(${issue.project?.name})`,
+          ": ",
+          !!parent && `${parent.title} - `,
+          issue.title,
+        ]
+          .filter(Boolean)
+          .join("");
+
+        setOutput("pr-title", prTitle);
 
         if (inputs.outputMultiple) {
           setOutput("linear-issues", JSON.stringify(foundIssues));
