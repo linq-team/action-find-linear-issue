@@ -29,11 +29,12 @@ type PartsWithOpts<Type> = {
 };
 type PartsType = PartsWithOpts<{ branch: void; title: void; body: void }>;
 
-type LimitedIssue = Omit<Issue, "team" | "labels" | "project">;
+type LimitedIssue = Omit<Issue, "team" | "labels" | "project" | "parent">;
 type FoundIssueType = LimitedIssue & {
   team?: Team | null;
   labels?: IssueLabel[] | null;
   project?: Project | null;
+  parent?: Issue | null;
 };
 
 const main = async () => {
@@ -123,6 +124,7 @@ const main = async () => {
                 team: inputs.withTeam ? await issue.team : null,
                 labels: inputs.withLabels ? (await issue.labels()).nodes : null,
                 project: inputs.withProject ? await issue.project : null,
+                parent: (await issue.parent) || null,
               };
             }
           );
@@ -135,10 +137,9 @@ const main = async () => {
         debug(`Updated result: ${JSON.stringify(foundIssues)}`);
 
         const issue = foundIssues[0];
-        const project = issue.project;
-        const parent = await issue.parent;
+        const { project, parent } = issue;
 
-        debug(`parent issue: ${JSON.stringify(parent)}`);
+        debug(`xparent issue: ${JSON.stringify(parent)}`);
 
         const prTitle = [
           issue.team?.key,
