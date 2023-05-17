@@ -9748,7 +9748,7 @@ const main = async () => {
                 (0, core_1.debug)(`Updated result: ${JSON.stringify(foundIssues)}`);
                 const issue = foundIssues[0];
                 const { project, parent } = issue;
-                (0, core_1.debug)(`xparent issue: ${JSON.stringify(parent)}`);
+                (0, core_1.debug)(`parent issue: ${JSON.stringify(parent)}`);
                 const prTitle = [
                     issue.team?.key,
                     !!project && `(${issue.project?.name})`,

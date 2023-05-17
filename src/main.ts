@@ -139,7 +139,7 @@ const main = async () => {
         const issue = foundIssues[0];
         const { project, parent } = issue;
 
-        debug(`xparent issue: ${JSON.stringify(parent)}`);
+        debug(`parent issue: ${JSON.stringify(parent)}`);
 
         const prTitle = [
           issue.team?.key,
