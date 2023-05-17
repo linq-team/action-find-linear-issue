@@ -9746,14 +9746,18 @@ const main = async () => {
                 const foundIssues = await extendIssues(issues);
                 (0, core_1.debug)(`Updated result: ${JSON.stringify(foundIssues)}`);
                 const issue = foundIssues[0];
-                const issueHasProject = !!issue.project;
+                const project = issue.project;
                 const parent = await issue.parent;
-                const issueHasParent = !!parent;
-                const prTitle = issue.team?.key +
-                    (issueHasProject ? `(${issue.project?.name})` : "") +
-                    ": " +
-                    (issueHasParent ? `${parent.title} - ` : "") +
-                    issue.title;
+                (0, core_1.debug)(`parent issue: ${JSON.stringify(parent)}`);
+                const prTitle = [
+                    issue.team?.key,
+                    !!project && `(${issue.project?.name})`,
+                    ": ",
+                    !!parent && `${parent.title} - `,
+                    issue.title,
+                ]
+                    .filter(Boolean)
+                    .join("");
                 (0, core_1.setOutput)("pr-title", prTitle);
                 if (inputs.outputMultiple) {
                     (0, core_1.setOutput)("linear-issues", JSON.stringify(foundIssues));
