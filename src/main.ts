@@ -151,9 +151,12 @@ const main = async () => {
           .filter(Boolean)
           .join("");
 
-        const prBody = [`## [🔗 Linear Issue](${url})`, `${description}`].join(
-          "\n\n"
-        );
+        const prBody = [
+          `## [🔗 Linear Issue](${url})`, //
+          description || "[ No description provided ]",
+        ]
+          .filter(Boolean)
+          .join("\n\n");
 
         setOutput("pr-title", prTitle);
         setOutput("pr-body", prBody);

@@ -9758,7 +9758,12 @@ const main = async () => {
                 ]
                     .filter(Boolean)
                     .join("");
-                const prBody = [`## [🔗 Linear Issue](${url})`, `${description}`].join("\n\n");
+                const prBody = [
+                    `## [🔗 Linear Issue](${url})`,
+                    description || "[ No description provided ]",
+                ]
+                    .filter(Boolean)
+                    .join("\n\n");
                 (0, core_1.setOutput)("pr-title", prTitle);
                 (0, core_1.setOutput)("pr-body", prBody);
                 if (inputs.outputMultiple) {
