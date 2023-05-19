@@ -9747,18 +9747,25 @@ const main = async () => {
                 const foundIssues = await extendIssues(issues);
                 (0, core_1.debug)(`Updated result: ${JSON.stringify(foundIssues)}`);
                 const issue = foundIssues[0];
-                const { project, parent } = issue;
+                const { project, parent, title, description, team, url } = issue;
                 (0, core_1.debug)(`parent issue: ${JSON.stringify(parent)}`);
                 const prTitle = [
-                    issue.team?.key,
-                    !!project && `(${issue.project?.name})`,
+                    team?.key,
+                    !!project && `(${project?.name})`,
                     ": ",
                     !!parent && `${parent.title} - `,
-                    issue.title,
+                    title,
                 ]
                     .filter(Boolean)
                     .join("");
+                const prBody = [
+                    `## [🔗 Linear Issue](${url})`,
+                    description || "[ No description provided ]",
+                ]
+                    .filter(Boolean)
+                    .join("\n\n");
                 (0, core_1.setOutput)("pr-title", prTitle);
+                (0, core_1.setOutput)("pr-body", prBody);
                 if (inputs.outputMultiple) {
                     (0, core_1.setOutput)("linear-issues", JSON.stringify(foundIssues));
                 }
