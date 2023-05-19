@@ -137,21 +137,26 @@ const main = async () => {
         debug(`Updated result: ${JSON.stringify(foundIssues)}`);
 
         const issue = foundIssues[0];
-        const { project, parent } = issue;
+        const { project, parent, title, description, team, url } = issue;
 
         debug(`parent issue: ${JSON.stringify(parent)}`);
 
         const prTitle = [
-          issue.team?.key,
-          !!project && `(${issue.project?.name})`,
+          team?.key,
+          !!project && `(${project?.name})`,
           ": ",
           !!parent && `${parent.title} - `,
-          issue.title,
+          title,
         ]
           .filter(Boolean)
           .join("");
 
+        const prBody = [`## [🔗 Linear Issue](${url})`, `${description}`].join(
+          "\n\n"
+        );
+
         setOutput("pr-title", prTitle);
+        setOutput("pr-body", prBody);
 
         if (inputs.outputMultiple) {
           setOutput("linear-issues", JSON.stringify(foundIssues));

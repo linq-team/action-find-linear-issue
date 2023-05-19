@@ -6,13 +6,13 @@ This is helpful when you're:
 
 - Ensuring each Pull Request has a Linear Issue.
 - Making a forced PR title/description updates depends on data from Linear
-- Adjusting release notes on GitHub or somewhere else via PRs (actions) and Linear Issues 
+- Adjusting release notes on GitHub or somewhere else via PRs (actions) and Linear Issues
 
 ## Inputs
 
 | Input                 | Description                                                                        | Required |
-|-----------------------|------------------------------------------------------------------------------------|----------|
-| `linear-api-key`      | Linear API key generated from https://linear.app/settings/api . (e.g. `lin_api_*)` | ✅        |
+| --------------------- | ---------------------------------------------------------------------------------- | -------- |
+| `linear-api-key`      | Linear API key generated from https://linear.app/settings/api . (e.g. `lin_api_*)` | ✅       |
 | `output-multiple`     | Find multiple issues and output a JSON array of results (default `false`)          | 🚫       |
 | `include-title`       | Taking the PR title into account to find issues (default `false`)                  | 🚫       |
 | `include-description` | Taking the PR description into account to find issues (default `false`)            | 🚫       |
@@ -24,7 +24,7 @@ This is helpful when you're:
 ## Outputs
 
 | Output          | Description                                                      |
-|-----------------|------------------------------------------------------------------|
+| --------------- | ---------------------------------------------------------------- |
 | `linear-issue`  | The Linear issue in JSON format                                  |
 | `linear-issues` | The Linear issues as JSON array (when `output-multiple` is used) |
 
@@ -64,3 +64,7 @@ jobs:
           body: |
             [${{ env.issue_identifier }}: ${{ env.issue_title }}](${{ env.issue_url }})
 ```
+
+## Updating the action
+
+Run `npm run all` to build the action and update the `main` branch.
