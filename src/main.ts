@@ -142,8 +142,10 @@ const main = async () => {
         debug(`parent issue: ${JSON.stringify(parent)}`);
 
         const prTitle = [
+          team?.icon && `:${team?.icon}:`,
           team?.key,
-          !!project && `(${project?.name})`,
+          !!project &&
+            `(${project.icon ? `:${project.icon}:` : ""}${project?.name})`,
           ": ",
           !!parent && `${parent.title} - `,
           title,

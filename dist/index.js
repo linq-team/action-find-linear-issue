@@ -9750,8 +9750,10 @@ const main = async () => {
                 const { project, parent, title, description, team, url } = issue;
                 (0, core_1.debug)(`parent issue: ${JSON.stringify(parent)}`);
                 const prTitle = [
+                    team?.icon && `:${team?.icon}:`,
                     team?.key,
-                    !!project && `(${project?.name})`,
+                    !!project &&
+                        `(${project.icon ? `:${project.icon}:` : ""}${project?.name})`,
                     ": ",
                     !!parent && `${parent.title} - `,
                     title,
