@@ -33,7 +33,7 @@ outputs:
     description: "Found Linear issue in JSON form"
 
 runs:
-  using: "node16"
+  using: "node24"
   main: "dist/index.js"
 branding:
   icon: "git-pull-request"
